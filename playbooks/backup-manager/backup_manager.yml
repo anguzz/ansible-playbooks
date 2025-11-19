@@ -1,0 +1,54 @@
+---
+- name: Automated Backup Manager (User-Level)
+  hosts: local
+  gather_facts: yes
+  become: false   
+
+  vars:
+    backup_root: "{{ ansible_env.HOME }}/backups"
+    date_stamp: "{{ ansible_date_time.date }}-{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}"
+    backup_dir: "{{ backup_root }}/{{ date_stamp }}"
+    files_to_backup:
+      - "{{ ansible_env.HOME }}/Documents"
+
+  tasks:
+
+    - name: Ensure backup root directory exists
+      file:
+        path: "{{ backup_root }}"
+        state: directory
+        mode: '0755'
+
+    - name: Create dated backup directory
+      file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy files/directories to backup directory
+      copy:
+        src: "{{ item }}"
+        dest: "{{ backup_dir }}/"
+        remote_src: yes
+      loop: "{{ files_to_backup }}"
+
+    - name: Compress backup directory
+      archive:
+        path: "{{ backup_dir }}"
+        dest: "{{ backup_root }}/backup-{{ date_stamp }}.tar.gz"
+        format: gz
+
+    - name: Check if compressed backup exists
+      stat:
+        path: "{{ backup_root }}/backup-{{ date_stamp }}.tar.gz"
+      register: backup_check
+
+    - name: Notify success
+      debug:
+        msg: "Backup completed successfully! File: {{ backup_root }}/backup-{{ date_stamp }}.tar.gz"
+      when: backup_check.stat.exists
+
+    - name: Notify failure
+      debug:
+        msg: "Backup FAILED — compressed file not found."
+      when: not backup_check.stat.exists

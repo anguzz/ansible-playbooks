@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Facts Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<h1>System Facts Dashboard</h1>
+
+<div class="section">
+    <h2>System Information</h2>
+    <p><b>Hostname:</b> {{ ansible_facts.hostname }}</p>
+    <p><b>OS:</b> {{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }}</p>
+    <p><b>Kernel:</b> {{ ansible_facts.kernel }}</p>
+</div>
+
+<div class="section">
+    <h2>Hardware</h2>
+    <p><b>Architecture:</b> {{ ansible_facts.architecture }}</p>
+    <p><b>CPU:</b> {{ ansible_facts.processor[0] }}</p>
+    <p><b>Total Memory:</b> {{ ansible_facts.memtotal_mb }} MB</p>
+</div>
+
+<div class="section">
+    <h2>Network</h2>
+    <p><b>Default IPv4 Address:</b> {{ ansible_facts.default_ipv4.address }}</p>
+    <p><b>Interface:</b> {{ ansible_facts.default_ipv4.interface }}</p>
+    <p><b>MAC Address:</b> {{ ansible_facts.default_ipv4.macaddress }}</p>
+    <p><b>Gateway:</b> {{ ansible_facts.default_ipv4.gateway }}</p>
+</div>
+
+<div class="section">
+    <h2>Time & Date</h2>
+    <p><b>Current Time:</b> {{ ansible_facts.date_time.iso8601 }}</p>
+    <p><b>Timezone:</b> {{ ansible_facts.date_time.tz }}</p>
+    <p><b>Uptime:</b> {{ ansible_facts.uptime_seconds }} seconds</p>
+</div>
+
+<div class="section">
+    <h2>Storage</h2>
+    <ul>
+    {% for mount in ansible_facts.mounts %}
+        <li>
+            <b>{{ mount.device }}</b> mounted on <b>{{ mount.mount }}</b>
+            — {{ mount.size_total // (1024*1024) }} MB total
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>

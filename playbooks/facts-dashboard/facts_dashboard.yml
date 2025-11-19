@@ -1,0 +1,30 @@
+
+- name: Generate system facts HTML dashboard
+  hosts: local
+  gather_facts: yes
+  become: yes
+
+  vars:
+    dest_path: /var/www/html/facts.html
+
+  tasks:
+
+    - name: Ensure web root exists
+      file:
+        path: /var/www/html
+        state: directory
+
+    - name: Deploy CSS file
+      copy:
+        src: css/style.css
+        dest: /var/www/html/style.css
+
+    - name: Generate HTML dashboard from template
+      template:
+        src: templates/facts_template.j2
+        dest: "{{ dest_path }}"
+        mode: '0644'
+
+    - name: Display location of dashboard
+      debug:
+        msg: "Dashboard generated at http://localhost/facts.html"
