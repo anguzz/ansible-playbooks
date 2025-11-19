@@ -7,6 +7,7 @@ To run this dashboard run
 - Ensure ansible is installed and run `ansible-playbook playbooks/facts-dashboard/facts_dashboard.yml --ask-become-pass`
 - view at `http://localhost:80/facts.html` the default port used for apache.
 
+<img width="1186" height="867" alt="image" src="https://github.com/user-attachments/assets/2cdb64d2-cb0e-40b1-94bd-8381f988ba70" />
 
 
 ## Troubleshooting errors
