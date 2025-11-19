@@ -1,9 +1,6 @@
 # Ansible Playbook Examples
 
-A collection of Ansible playbooks for learning, labs, and real-world automation.
-
-This repository includes class assignments, experiments, and reusable playbooks that can be adapted for work projects. It was originally created for my Software Defined Network course in the graduate program at California State Polytechnic University, Pomona.
-
+A collection of Ansible playbooks for labs, home/work automation templates, and graduate-level systems automation coursework.
 
 ## Repository Structure
 
@@ -22,7 +19,7 @@ ansible-playbooks/
 │   ├── backup-manager/
 │   │   ├── backup_manager.yml
 │   │   └── vars/
-│   └── ...
+│   └── ...etc
 ```
 
 
